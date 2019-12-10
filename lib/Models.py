@@ -20,8 +20,9 @@ virDomainStates = {
         #~ for key, val in kwargs.items():
             #~ setattr(self, key, val)
 class Hypervisor():
-    def __init__(self, id, c = None):
+    def __init__(self, id, name, c = None):
         self.id = id
+        self.name = name
         if c is None:
             return
         self.version = c.getVersion()

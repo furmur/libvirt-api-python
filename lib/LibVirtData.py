@@ -27,13 +27,14 @@ class LibVirtData:
                 'monitor_instance': LibVirtMonitorInstance(hv['id'], hv['uri'], hv['name'], loop, self),
                 'name': hv['name'],
                 'uri': hv['uri'],
-                'model': Hypervisor(hv['id']),
+                'model': Hypervisor(hv['id'],hv['name']),
                 'vms': []
             }
 
     def update_hv_info(self, hv_id, c):
         #fill hv info
-        h = Hypervisor(hv_id,c)
+        hv_data = self.hypervisors[hv_id]
+        h = Hypervisor(hv_id,hv_data['name'],c)
 
         #fill vms info
         vms = dict()

@@ -9,6 +9,7 @@ from marshmallow_jsonapi import fields
 
 class HypervisorsSchema(Schema):
     id = fields.Str(dump_only=True)
+    name = fields.Str()
 
     version = fields.Integer()
     libversion = fields.Integer()
