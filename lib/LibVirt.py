@@ -203,15 +203,15 @@ class EventFilter(object):
             print("Unexpected error: %s" % sys.exc_info()[0])
 
 class LibVirtMonitorInstance(object):
-    def __init__(self, id_, uri, name, loop, data, socketio, *args, **kwargs):
+    def __init__(self, id_, uri, name, loop, data, connected_websockets, *args, **kwargs):
         self.uri = uri
         self.id_ = id_
         self.data = data
-        self.socketio = socketio
+        self.connected_websockets = connected_websockets
         self.loop = loop
         self.name = name
         self.screenshots_timer_interval = 1
-        self.watchdog_timeout = 1
+        self.watchdog_timeout = 2
         self.event_loop_thread = None
         self.evf = EventFilter(self.name)
         self.vc = None
@@ -283,20 +283,21 @@ class LibVirtMonitorInstance(object):
                                   -1, -1, dom.UUIDString())
 
     async def screenshots_loop(self):
-        # ~ await self.screenshots_timer_interval = 1
         while True:
             try:
                 pass
             except libvirt.libvirtError as e:
-                print('got on_watchdog_timer exception: ',e)
+                print('got screenshots_loop exception: ',e)
             except Exception as e:
-                print('got on_watchdog_timer exception: ',e)
-            await asyncio.sleep(self.watchdog_timeout)
+                print('got screenshots_loop exception: ',e)
+            await asyncio.sleep(self.screenshots_timer_interval)
 
     async def watchdog_loop(self):
         while True:
             try:
-                self.socketio.emit("hi. i'm {}".format(self.name))
+                print(self.name, self.connected_websockets)
+                if self.connected_websockets:
+                    await asyncio.wait([ws.send("hi from {}".format(self.name)) for ws in self.connected_websockets])
                 await self.on_watchdog_timer()
             except libvirt.libvirtError as e:
                 print('got on_watchdog_timer exception: ',e)
