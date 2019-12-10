@@ -32,6 +32,7 @@ class Hypervisor():
         self.info = c.getInfo()
         for k,v in zip(["cpu_model","total_memory","cpus","mhz","numa_nodes","cpu_sockets","cpu_cores","cpu_threads"],self.info):
             setattr(self,k,v)
+        self.total_memory = self.total_memory * 1024 * 1024
         self.free_memory = c.getFreeMemory()
         #~ self.capabilities_xml = c.getCapabilities()
         #~ self.capabilities = ET.fromstring(self.capabilities_xml)
