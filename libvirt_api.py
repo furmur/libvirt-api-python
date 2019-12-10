@@ -12,9 +12,10 @@ import libvirt
 try:
     from flask import Flask
     from flask_rest_jsonapi import Api
+    from flask_socketio import SocketIO
     from flask_rest_jsonapi.data_layers.alchemy import SqlalchemyDataLayer
 except:
-    print("# apt install python3-flask python3-libvirt python3-prctl")
+    print("# apt install python3-flask python3-flask-socketio python3-libvirt python3-prctl")
     print("$ pip3 install flask_rest_jsonapi")
     raise
 
@@ -27,6 +28,7 @@ app = Flask(__name__)
 app.config['DEBUG'] = True
 
 api = Api(app)
+socketio = SocketIO(app)
 
 api.route(HypervisorsList, 'hypervisors_list', '/hypervisors')
 api.route(HypervisorDetail, 'hypervisor_detail', '/hypervisors/<int:id>','/virtual-machines/<string:virtual_machine_id>/hypervisor')
@@ -54,7 +56,6 @@ if __name__ == '__main__':
 
         for id_, h in hypervisors.items():
             monitor_tasks.append(loop.create_task(h['monitor_instance'].watchdog_loop()))
-
         try:
             loop.run_until_complete(asyncio.gather(
                 *monitor_tasks
@@ -72,14 +73,15 @@ if __name__ == '__main__':
 
     #init 
     loop = asyncio.new_event_loop()
-    libvirt_data.configure(loop, 'cluster.yml')
+    libvirt_data.configure(loop, 'cluster.yml', socketio)
 
     libvirt_worker = threading.Thread(target=libvirt_worker_loop, args=(loop,libvirt_data.hypervisors))
     libvirt_worker.start()
 
     #~ # Start flask application
     print("[{}] entering flask app loop".format(threading.get_ident())) 
-    app.run(debug=True,use_reloader=False,port=4567)
+    # ~ app.run(debug=True,use_reloader=False,port=4567)
+    socketio.run(app,debug = True,use_reloader=False,port=4567)
 
     libvirt_worker_future = asyncio.run_coroutine_threadsafe(cancel_libvirt_worker_loop(loop), loop)
     try:

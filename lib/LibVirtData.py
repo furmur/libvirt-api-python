@@ -17,14 +17,14 @@ class LibVirtData:
         self.hypervisors = {}
         self.mutex = threading.Lock()
 
-    def configure(self, loop, filename):
+    def configure(self, loop, filename, socketio):
         with open(filename, 'r') as f:
             self.cfg = yaml.load(f)
             #~ print(self.cfg)
 
         for hv in self.cfg['hypervisors']:
             self.hypervisors[hv['id']] = {
-                'monitor_instance': LibVirtMonitorInstance(hv['id'], hv['uri'], hv['name'], loop, self),
+                'monitor_instance': LibVirtMonitorInstance(hv['id'], hv['uri'], hv['name'], loop, self, socketio),
                 'name': hv['name'],
                 'uri': hv['uri'],
                 'model': Hypervisor(hv['id'],hv['name']),

@@ -203,12 +203,14 @@ class EventFilter(object):
             print("Unexpected error: %s" % sys.exc_info()[0])
 
 class LibVirtMonitorInstance(object):
-    def __init__(self, id_, uri, name, loop, data, *args, **kwargs):
+    def __init__(self, id_, uri, name, loop, data, socketio, *args, **kwargs):
         self.uri = uri
         self.id_ = id_
         self.data = data
+        self.socketio = socketio
         self.loop = loop
         self.name = name
+        self.screenshots_timer_interval = 1
         self.watchdog_timeout = 1
         self.event_loop_thread = None
         self.evf = EventFilter(self.name)
@@ -280,9 +282,21 @@ class LibVirtMonitorInstance(object):
         self.evf.vir_event_filter(libvirt.VIR_DOMAIN_EVENT_ID_CONTROL_ERROR,
                                   -1, -1, dom.UUIDString())
 
+    async def screenshots_loop(self):
+        # ~ await self.screenshots_timer_interval = 1
+        while True:
+            try:
+                pass
+            except libvirt.libvirtError as e:
+                print('got on_watchdog_timer exception: ',e)
+            except Exception as e:
+                print('got on_watchdog_timer exception: ',e)
+            await asyncio.sleep(self.watchdog_timeout)
+
     async def watchdog_loop(self):
         while True:
             try:
+                self.socketio.emit("hi. i'm {}".format(self.name))
                 await self.on_watchdog_timer()
             except libvirt.libvirtError as e:
                 print('got on_watchdog_timer exception: ',e)
@@ -296,7 +310,6 @@ class LibVirtMonitorInstance(object):
         #~ print("on_watchdog_timer",self.name)
         if not self.vc or self.vc.isAlive() != 1:
             #connect/reconnect
-
             if self.vc:
                 #cleanup previous connection
                 for cid in self.callback_ids:
