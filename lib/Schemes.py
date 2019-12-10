@@ -69,5 +69,7 @@ class VirtualMachinesSchema(Schema):
         self_view_kwargs={'id': '<id>'},
         related_view='hypervisor_detail',
         related_view_kwargs={'virtual_machine_id': '<id>'},
+        include_resource_linkage=True,
+        include_resource_relationship=True,
         schema='HypervisorsSchema',
         type_='hypervisor')
