@@ -49,7 +49,7 @@ class VirtualMachine():
         self.name = d.name()
         self.xml = d.XMLDesc()
         self.state = virDomainStates[d.state()[0]]
-        self.maxMemory = d.maxMemory() * 1024
+        self.memory = d.maxMemory() * 1024
         try:
             self.cpus = d.maxVcpus()
         except:

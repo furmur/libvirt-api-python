@@ -51,7 +51,7 @@ class VirtualMachinesSchema(Schema):
     name = fields.Str()
     state = fields.Str()
     cpus = fields.Integer()
-    maxMemory = fields.Integer()
+    memory = fields.Integer()
     xml = fields.Str()
 
     #~ hypervizor_id = fields.Int()
