@@ -40,7 +40,7 @@ class LibVirtData:
         for d in c.listAllDomains():
             vm_id = d.UUIDString()
             try:
-                vms[vm_id] = VirtualMachine(vm_id,hv_id,d)
+                vms[vm_id] = VirtualMachine(vm_id,h,d)
             except Exception as e:
                 print('vm {} add exception: {}'.format(vm_id,e))
             except:

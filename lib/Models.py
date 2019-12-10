@@ -42,9 +42,9 @@ class Hypervisor():
             #~ print('Hypervisor',self.hostname, attr,':', value)
 
 class VirtualMachine():
-    def __init__(self, id, hw_id, d):
+    def __init__(self, id, hv, d):
         self.id = id
-        self.hypervisor = hw_id
+        self.hypervisor = hv
         self.name = d.name()
         self.xml = d.XMLDesc()
         self.state = virDomainStates[d.state()[0]]
