@@ -54,7 +54,6 @@ class VirtualMachinesSchema(Schema):
     memory = fields.Integer()
     xml = fields.Str()
 
-    #~ hypervizor_id = fields.Int()
     class Meta:
         type_ = 'virtual-machines'
         self_view = 'virtual_machine_detail'

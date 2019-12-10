@@ -75,9 +75,6 @@ if __name__ == '__main__':
     libvirt_data.configure(loop, 'cluster.yml')
 
     libvirt_worker = threading.Thread(target=libvirt_worker_loop, args=(loop,libvirt_data.hypervisors))
-    # ~ libvirt_worker_future = asyncio.run_coroutine_threadsafe(libvirt_worker_loop(loop, libvirt_monitors), loop)
-    # ~ libvirt_worker_future.cancel()
-
     libvirt_worker.start()
 
     #~ # Start flask application

@@ -161,9 +161,6 @@ class LibVirtDataLayer(BaseDataLayer):
         :param dict view_kwargs: kwargs from the resource view
         :return tuple: the number of object and the list of objects
         """
-        # ~ print('get_collection')
-        #~ print(qs.pagination)
-        # ~ print(view_kwargs)
         #~ if 'id' in view_kwargs else None
         # ~ if qs.filters:
             # ~ query = self.filter_query(query, qs.filters, self.model)

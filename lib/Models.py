@@ -2,7 +2,6 @@
 # -*- coding: utf8 -*-
 
 import libvirt
-#~ import xml.etree.ElementTree as ET
 
 virDomainStates = {
     libvirt.VIR_DOMAIN_NOSTATE: 'no state',
@@ -15,10 +14,6 @@ virDomainStates = {
     libvirt.VIR_DOMAIN_PMSUSPENDED: 'suspended by guest power management'
 }
 
-#~ class Model:
-    #~ def __init__(self, **kwargs):
-        #~ for key, val in kwargs.items():
-            #~ setattr(self, key, val)
 class Hypervisor():
     def __init__(self, id, name, c = None):
         self.id = id
@@ -34,11 +29,6 @@ class Hypervisor():
             setattr(self,k,v)
         self.total_memory = self.total_memory * 1024 * 1024
         self.free_memory = c.getFreeMemory()
-        #~ self.capabilities_xml = c.getCapabilities()
-        #~ self.capabilities = ET.fromstring(self.capabilities_xml)
-        #~ self.domain_capabilities = c.getDomainCapabilities()
-        #~ print('domain_capabilities',self.domain_capabilities)
-        #~ print('capabilities',self.capabilities, self.capabilities_xml)
 
         #~ for attr, value in self.__dict__.items():
             #~ print('Hypervisor',self.hostname, attr,':', value)
