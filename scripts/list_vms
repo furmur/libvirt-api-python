@@ -1,0 +1,1 @@
+curl -s -H "Accept: application/vnd.api+json" http://127.0.0.1:4567/virtual-machines$@ | jq 
