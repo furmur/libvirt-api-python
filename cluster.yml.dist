@@ -1,0 +1,7 @@
+hypervisors:
+  - id: 1
+    name: tcp_hv
+    uri: 'qemu+tcp://domain.invalid:65000/system'
+  - id: 2
+    name: ssh_hv
+    uri: 'qemu+ssh://root@domain.invalid:65001/system'
